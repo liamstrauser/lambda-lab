@@ -19,8 +19,12 @@ public class Console {
 		while (! input.equalsIgnoreCase("exit")) {
 			
 			ArrayList<String> tokens = lexer.tokenize(input);
+			parser.tokens = tokens;
 
 			System.out.println(tokens.toString());
+
+			parser.preParse();
+			
 			String output = "";
 			
 			try {

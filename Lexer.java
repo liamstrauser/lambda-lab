@@ -20,12 +20,15 @@ public class Lexer {
 	public ArrayList<String> tokenize(String input) {
 		ArrayList<String> tokens = new ArrayList<String>();
 
-		ArrayList<Character> tokenChars = new ArrayList<>(Arrays.asList('(', ')', '=', '\\', 'λ', '.'));
+		ArrayList<Character> tokenChars = new ArrayList<>(Arrays.asList('(', ')', '=', '\\', '.'));
 		
 		
 		for(int i=0; i < input.length(); i++){
 			if(tokenChars.contains(input.charAt(i))){
 				tokens.add(String.valueOf(input.charAt(i)));
+			}
+			else if(String.valueOf(input.charAt(i)).equals("λ")){
+				tokens.add("\\");
 			}
 			else if(input.charAt(i) == ' '){
 				continue;
