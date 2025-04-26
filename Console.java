@@ -20,6 +20,7 @@ public class Console {
 			
 			ArrayList<String> tokens = lexer.tokenize(input);
 
+			System.out.println(tokens.toString());
 			String output = "";
 			
 			try {
