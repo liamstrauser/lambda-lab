@@ -24,11 +24,12 @@ public class Console {
 			System.out.println(tokens.toString());
 
 			parser.preParse();
+
 			
 			String output = "";
 			
 			try {
-				Expression exp = parser.parse(tokens);
+				Expression exp = parser.parse();
 				output = exp.toString();
 			} catch (Exception e) {
 				System.out.println("Unparsable expression, input was: \"" + input + "\"");

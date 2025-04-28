@@ -35,6 +35,7 @@ public class Lexer {
 			}
 			else if (input.charAt(i) == ';'){
 				comment = input.substring(i+1);
+				break;
 			}
 
 			// Group letters together as one string

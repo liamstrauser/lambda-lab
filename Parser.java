@@ -1,10 +1,14 @@
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Parser {
 	
 	public ArrayList<String> tokens;
+	public HashMap<String, Expression> defs = new HashMap<String, Expression>();
+	
+	
 	/*
 	 * Turns a set of tokens into an expression.  Comment this back in when you're ready.
 	 */
@@ -64,9 +68,17 @@ public class Parser {
 	}
 	
 
-	public Expression parse(ArrayList<String> tokens) throws ParseException {
-		Variable var = new Variable(tokens.get(0));
-		
+	public Expression parse() throws ParseException {
+		if (tokens.size() == 0) {
+			return null;
+		}
+		else (tokens.size() == 1) {
+			Variable var = new Variable(tokens.get(0));
+			return var;
+		} else if(tokens.size() ==2 ){
+			
+		}
+
 		// This is nonsense code, just to show you how to thrown an Exception.
 		// To throw it, type "error" at the console.
 		if (var.toString().equals("error")) {
