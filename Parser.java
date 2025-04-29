@@ -69,22 +69,25 @@ public class Parser {
 	
 
 	public Expression parse() throws ParseException {
-		if (tokens.size() == 0) {
-			return null;
-		}
-		else (tokens.size() == 1) {
+		if (tokens.size() == 1) {
 			Variable var = new Variable(tokens.get(0));
 			return var;
-		} else if(tokens.size() ==2 ){
-			
 		}
-
-		// This is nonsense code, just to show you how to thrown an Exception.
-		// To throw it, type "error" at the console.
-		if (var.toString().equals("error")) {
-			throw new ParseException("User typed \"Error\" as the input!", 0);
+		else if (tokens.size() == 2) {
+			Application app  = new Application(new Variable(tokens.get(0)), new Variable(tokens.get(1)));
+			return app;
+		}
+		else if (tokens.size() > 2) {
+			for (int i = 0; i < tokens.size(); i++) {
+				if(tokens.get(i)
+			}
 		}
 		
-		return var;
+
+
+		// This is nonsense code, just to show you how to thrown an Exception.
+		// To throw it, type "error" at the console
+		
+		return new Variable("");
 	}
 }
