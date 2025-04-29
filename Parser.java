@@ -66,6 +66,17 @@ public class Parser {
 			System.out.println("closing paren error");
 		}
 	}
+
+	public Expression appHelper (int idx) {
+		if (idx = tokens.size) {
+			
+		}
+		else if () {
+
+		}
+
+		return new Application(new Variable(tokens.get(idx)), new Variable(tokens.get());
+	}
 	
 
 	public Expression parse() throws ParseException {
@@ -78,9 +89,12 @@ public class Parser {
 			return app;
 		}
 		else if (tokens.size() > 2) {
-			for (int i = 0; i < tokens.size(); i++) {
-				if(tokens.get(i)
-			}
+
+			Application app = new Application(new Variable(tokens.get(0)), new Variable(tokens.get(1)));
+
+			int i = 2;
+
+			
 		}
 		
 
