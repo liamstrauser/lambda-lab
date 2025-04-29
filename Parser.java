@@ -8,10 +8,6 @@ public class Parser {
 	public ArrayList<String> tokens;
 	public HashMap<String, Expression> defs = new HashMap<String, Expression>();
 	
-	
-	/*
-	 * Turns a set of tokens into an expression.  Comment this back in when you're ready.
-	 */
 
 	public void preParse() {
 		for (int i = 0; i < tokens.size(); i++) {
@@ -68,14 +64,10 @@ public class Parser {
 	}
 
 	public Expression appHelper (int idx) {
-		if (idx = tokens.size) {
-			
+		if (idx <= 0) {
+			return new Variable(tokens.get(idx));
 		}
-		else if () {
-
-		}
-
-		return new Application(new Variable(tokens.get(idx)), new Variable(tokens.get());
+		return new Application(appHelper(idx-1), new Variable(tokens.get(idx)));
 	}
 	
 
@@ -89,15 +81,9 @@ public class Parser {
 			return app;
 		}
 		else if (tokens.size() > 2) {
-
-			Application app = new Application(new Variable(tokens.get(0)), new Variable(tokens.get(1)));
-
-			int i = 2;
-
-			
+			Application app = (Application) appHelper(tokens.size()-1);
+			return app;
 		}
-		
-
 
 		// This is nonsense code, just to show you how to thrown an Exception.
 		// To throw it, type "error" at the console
