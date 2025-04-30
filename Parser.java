@@ -69,7 +69,7 @@ public class Parser {
 
 		int right = end;
 		
-		for (int i = end; i > start; i--) {
+		for (int i = end; i > start-1; i--) {
 			if(tokens.get(i).equals(")")){
 				if (parenCount == 0) {
 					end = i;
@@ -92,7 +92,7 @@ public class Parser {
 		
 		
 		if (right == start && end == fullExp && extraParen) {
-			return parseHelper(start+1, end);
+			return parseHelper(++start, end);
 		}
 
 
@@ -100,7 +100,7 @@ public class Parser {
 			return new Application(parseHelper(start, right), new Variable(tokens.get(end)));
 		}
 
-		return new Application(parseHelper(start, right), parseHelper(right+1, end));
+		return new Application(parseHelper(start, right), parseHelper(++right, end));
 	}
 
 	public Expression parseHelper(int start, int end) {
@@ -110,6 +110,10 @@ public class Parser {
 		if (tokens.get(0).equals("\\")) {
 			return null; // IDK but this will handle function
 		}
+
+		// if (tokens.get(start).equals("(") && tokens.get(end).equals(")")) {
+		// 	return parseHelper(start+1, end);
+		// }
 		
 		// we are just looking at one thing so it
 		if (start == end) {
