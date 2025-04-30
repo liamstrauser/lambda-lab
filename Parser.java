@@ -1,12 +1,12 @@
 
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Stack;
+
 
 public class Parser {
 	
 	public ArrayList<String> tokens;
-	public HashMap<String, Expression> defs = new HashMap<String, Expression>();
 	
 
 	public void preParse() {
@@ -63,52 +63,74 @@ public class Parser {
 		}
 	}
 
-	public Expression parseApp (int start, int end) {
-		int opens = 0;
-		
-		return new Application(new Variable(tokens.get(0)), new Variable(tokens.get(1)));
+	public Expression parseApp (int start, int length) {
+		String current = tokens.get(length-1);
 
+		if (current.equals(")")) {
+			Stack parenStack = new Stack();
+			int idx = length-2;
+			int insideParen;
+			while (parenStack.size() > 0 && idx > 0) {
+				if (tokens.get(idx).equals(")")){
+					insideParen = idx;
+					parenStack.push(")");
+					
+				}
+				else if (tokens.get(idx).equals("(")) {
+					if (parenStack.size() == 0) {
+						break;
+					}
+					else {
+						parenStack.pop();
+					}
+				}
 
-		// if (idx <= 0) {
-		// 	return new Variable(tokens.get(idx));
-		// }
-		// return new Application(parseApp(idx-1), new Variable(tokens.get(idx)));
-	}
-
-	public Expression parseHelper(int start, int end) {
-		
-		if (tokens.get(0).equals("\\")) {
-			// IDK but this will handle function
+			}
+			
 		}
 		
-		// we are just looking at one thing so it
-		if (start == end) {
-			new Variable(tokens.get(0));
+		
+		if (start <= 0) {
+			return new Variable(tokens.get(start));
 		}
 
-		return parseApp(start, end-1);
+		return new Application(parseApp(start, length-1), new Variable(tokens.get(length-1)));
 	}
+
+	// public Expression parseHelper(int start, int end) {
+		
+	// 	if (tokens.get(0).equals("\\")) {
+	// 		return null; // IDK but this will handle function
+	// 	}
+		
+	// 	// we are just looking at one thing so it
+	// 	if (start == end) {
+	// 		return new Variable(tokens.get(start));
+	// 	}
+
+	// 	return parseApp(start, end);
+	// }
 	
 
 	public Expression parse() throws ParseException {
-		if (tokens.size() == 0) return null;
+		// if (tokens.size() == 0) return null;
 
 		preParse();
 
-		Expression exp = parseHelper(0, tokens.size()-1);
+		// Expression exp = parseHelper(0, tokens.size()-1);
 
-		// if (tokens.size() == 1) {
-		// 	Variable var = new Variable(tokens.get(0));
-		// 	return var;
-		// }
-		// else if (tokens.size() == 2) {
-		// 	Application app  = new Application(new Variable(tokens.get(0)), new Variable(tokens.get(1)));
-		// 	return app;
-		// }
-		// else if (tokens.size() > 2) {
-		// 	Application app = (Application) parseApp(tokens.size()-1);
-		// 	return app;
-		// }
+		if (tokens.size() == 1) {
+			Variable var = new Variable(tokens.get(0));
+			return var;
+		}
+		else if (tokens.size() == 2) {
+			Application app  = new Application(new Variable(tokens.get(0)), new Variable(tokens.get(1)));
+			return app;
+		}
+		else if (tokens.size() > 2) {
+			Application app = (Application) parseApp(0, tokens.size());
+			return app;
+		}
 
 
 		// This is nonsense code, just to show you how to thrown an Exception.
