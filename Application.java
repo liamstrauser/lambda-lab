@@ -10,7 +10,6 @@ public class Application implements Expression {
     }
 
     public String toString() {
-        return "(" + left + " " + right + ")";
+        return "(" + left + " " + right + ")"; 
     }
-    
 }

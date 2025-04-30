@@ -22,9 +22,6 @@ public class Console {
 			parser.tokens = tokens;
 
 			System.out.println(tokens.toString());
-
-			parser.preParse();
-
 			
 			String output = "";
 			

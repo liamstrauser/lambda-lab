@@ -15,7 +15,6 @@ public class Parser {
 				preParseHelper(i);
 			}
 		}
-		System.out.println(tokens.toString());
 	}
 
 	public void insertParens(int start, int end) {
@@ -66,6 +65,7 @@ public class Parser {
 	public Expression parseApp (int start, int end) {
 		int parenCount = 0;
 		int fullExp = end;
+		boolean extraParen = false;
 
 		int right = end;
 		
@@ -73,6 +73,7 @@ public class Parser {
 			if(tokens.get(i).equals(")")){
 				if (parenCount == 0) {
 					end = i;
+					extraParen = true;
 				}
 				parenCount++;
 			}
@@ -90,12 +91,13 @@ public class Parser {
 		}
 		
 		
-		if (right == start && end == fullExp) {
-			return parseHelper(start + 1, end);
+		if (right == start && end == fullExp && extraParen) {
+			return parseHelper(start+1, end);
 		}
 
+
 		if (right == end) {
-			return new Application(parseHelper(start, end), new Variable(tokens.get(end)));
+			return new Application(parseHelper(start, right), new Variable(tokens.get(end)));
 		}
 
 		return new Application(parseHelper(start, right), parseHelper(right+1, end));
@@ -113,7 +115,7 @@ public class Parser {
 		if (start == end) {
 			return new Variable(tokens.get(start));
 		}
-
+		
 		return parseApp(start, end);
 	}
 	
@@ -123,28 +125,15 @@ public class Parser {
 
 		preParse();
 
-		// Expression exp = parseHelper(0, tokens.size()-1);
+		Expression exp = parseHelper(0, tokens.size());
 
-		if (tokens.size() == 1) {
-			Variable var = new Variable(tokens.get(0));
-			return var;
-		}
-		else if (tokens.size() == 2) {
-			Application app  = new Application(new Variable(tokens.get(0)), new Variable(tokens.get(1)));
-			return app;
-		}
-		else if (tokens.size() > 2) {
-			Application app = (Application) parseHelper(0, tokens.size());
-			return app;
-		}
-
-
+	
 		// This is nonsense code, just to show you how to thrown an Exception.
 		// To throw it, type "error" at the console
 		if ("apple".equals("error")) {
 			throw new ParseException("User typed \"Error\" as the input!", 0);
 		}
 		
-		return new Variable("");
+		return exp;
 	}
 }
