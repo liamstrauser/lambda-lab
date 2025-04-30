@@ -107,8 +107,8 @@ public class Parser {
 
 		end--;
 
-		if (tokens.get(0).equals("\\")) {
-			return null; // IDK but this will handle function
+		if (tokens.get(start).equals("\\")) {
+			return new Function(new Variable (tokens.get(start+1)), new Variable(tokens.get(start+3))); // IDK but this will handle function
 		}
 
 		// if (tokens.get(start).equals("(") && tokens.get(end).equals(")")) {
