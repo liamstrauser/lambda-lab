@@ -66,6 +66,7 @@ public class Parser {
 	public Expression parseApp (int start, int end) {
 		int opens = 0;
 		
+		return new Application(new Variable(tokens.get(0)), new Variable(tokens.get(1)));
 
 
 		// if (idx <= 0) {
