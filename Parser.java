@@ -63,53 +63,59 @@ public class Parser {
 		}
 	}
 
-	public Expression parseApp (int start, int length) {
-		String current = tokens.get(length-1);
+	public Expression parseApp (int start, int end) {
+		int parenCount = 0;
+		int fullExp = end;
 
-		if (current.equals(")")) {
-			Stack parenStack = new Stack();
-			int idx = length-2;
-			int insideParen;
-			while (parenStack.size() > 0 && idx > 0) {
-				if (tokens.get(idx).equals(")")){
-					insideParen = idx;
-					parenStack.push(")");
-					
+		int right = end;
+		
+		for (int i = end; i > start; i--) {
+			if(tokens.get(i).equals(")")){
+				if (parenCount == 0) {
+					end = i;
 				}
-				else if (tokens.get(idx).equals("(")) {
-					if (parenStack.size() == 0) {
-						break;
-					}
-					else {
-						parenStack.pop();
-					}
-				}
-
+				parenCount++;
 			}
-			
+			else if (tokens.get(i).equals("(")) {
+				parenCount--;
+				if (parenCount == 0) {
+					 right = i;
+					 break;
+				}
+			}
+			else if (parenCount == 0) {
+				right = i;
+				break;
+			}
 		}
 		
 		
-		if (start <= 0) {
+		if (right == start && end == fullExp) {
+			return parseHelper(start + 1, end);
+		}
+
+		if (right == end) {
+			return new Application(parseHelper(start, end), new Variable(tokens.get(end)));
+		}
+
+		return new Application(parseHelper(start, right), parseHelper(right+1, end));
+	}
+
+	public Expression parseHelper(int start, int end) {
+
+		end--;
+
+		if (tokens.get(0).equals("\\")) {
+			return null; // IDK but this will handle function
+		}
+		
+		// we are just looking at one thing so it
+		if (start == end) {
 			return new Variable(tokens.get(start));
 		}
 
-		return new Application(parseApp(start, length-1), new Variable(tokens.get(length-1)));
+		return parseApp(start, end);
 	}
-
-	// public Expression parseHelper(int start, int end) {
-		
-	// 	if (tokens.get(0).equals("\\")) {
-	// 		return null; // IDK but this will handle function
-	// 	}
-		
-	// 	// we are just looking at one thing so it
-	// 	if (start == end) {
-	// 		return new Variable(tokens.get(start));
-	// 	}
-
-	// 	return parseApp(start, end);
-	// }
 	
 
 	public Expression parse() throws ParseException {
@@ -128,7 +134,7 @@ public class Parser {
 			return app;
 		}
 		else if (tokens.size() > 2) {
-			Application app = (Application) parseApp(0, tokens.size());
+			Application app = (Application) parseHelper(0, tokens.size());
 			return app;
 		}
 
