@@ -63,30 +63,58 @@ public class Parser {
 		}
 	}
 
-	public Expression appHelper (int idx) {
-		if (idx <= 0) {
-			return new Variable(tokens.get(idx));
+	public Expression parseApp (int start, int end) {
+		int opens = 0;
+		
+
+
+		// if (idx <= 0) {
+		// 	return new Variable(tokens.get(idx));
+		// }
+		// return new Application(parseApp(idx-1), new Variable(tokens.get(idx)));
+	}
+
+	public Expression parseHelper(int start, int end) {
+		
+		if (tokens.get(0).equals("\\")) {
+			// IDK but this will handle function
 		}
-		return new Application(appHelper(idx-1), new Variable(tokens.get(idx)));
+		
+		// we are just looking at one thing so it
+		if (start == end) {
+			new Variable(tokens.get(0));
+		}
+
+		return parseApp(start, end-1);
 	}
 	
 
 	public Expression parse() throws ParseException {
-		if (tokens.size() == 1) {
-			Variable var = new Variable(tokens.get(0));
-			return var;
-		}
-		else if (tokens.size() == 2) {
-			Application app  = new Application(new Variable(tokens.get(0)), new Variable(tokens.get(1)));
-			return app;
-		}
-		else if (tokens.size() > 2) {
-			Application app = (Application) appHelper(tokens.size()-1);
-			return app;
-		}
+		if (tokens.size() == 0) return null;
+
+		preParse();
+
+		Expression exp = parseHelper(0, tokens.size()-1);
+
+		// if (tokens.size() == 1) {
+		// 	Variable var = new Variable(tokens.get(0));
+		// 	return var;
+		// }
+		// else if (tokens.size() == 2) {
+		// 	Application app  = new Application(new Variable(tokens.get(0)), new Variable(tokens.get(1)));
+		// 	return app;
+		// }
+		// else if (tokens.size() > 2) {
+		// 	Application app = (Application) parseApp(tokens.size()-1);
+		// 	return app;
+		// }
+
 
 		// This is nonsense code, just to show you how to thrown an Exception.
 		// To throw it, type "error" at the console
+		if ("apple".equals("error")) {
+			throw new ParseException("User typed \"Error\" as the input!", 0);
+		}
 		
 		return new Variable("");
 	}
