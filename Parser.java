@@ -19,7 +19,7 @@ public class Parser {
 
 	public void insertParens(int start, int end) {
 		tokens.add(start, "(");
-		tokens.add(end + 1, ")");
+		tokens.add(++end, ")");
 	}
 
 	public void preParseHelper(int index) {
@@ -69,7 +69,7 @@ public class Parser {
 
 		int right = end;
 		
-		for (int i = end; i > start-1; i--) {
+		for (int i = end; i >= start; i--) {
 			if(tokens.get(i).equals(")")){
 				if (parenCount == 0) {
 					end = i;
@@ -92,9 +92,11 @@ public class Parser {
 		
 		
 		if (right == start && end == fullExp && extraParen) {
+			System.out.println("start: " + start + " end: " + end);
 			return parseHelper(++start, end);
 		}
 
+		System.out.println("start: " + start + " end: " + end);
 
 		if (right == end) {
 			return new Application(parseHelper(start, right), new Variable(tokens.get(end)));
@@ -107,15 +109,15 @@ public class Parser {
 
 		end--;
 
+		System.out.println("start: " + start + " end: " + end);
+
 		if (tokens.get(start).equals("\\")) {
-			return new Function(new Variable (tokens.get(start+1)), new Variable(tokens.get(start+3))); // IDK but this will handle function
+			System.out.println("start: " + start + " end: " + end);
+			return new Function(new Variable (tokens.get(start+1)), parseHelper(start+3, end+1)); // IDK but this will handle function
 		}
 
-		// if (tokens.get(start).equals("(") && tokens.get(end).equals(")")) {
-		// 	return parseHelper(start+1, end);
-		// }
 		
-		// we are just looking at one thing so it
+		// we are just looking at one thing so it is a variable
 		if (start == end) {
 			return new Variable(tokens.get(start));
 		}
@@ -125,9 +127,13 @@ public class Parser {
 	
 
 	public Expression parse() throws ParseException {
-		// if (tokens.size() == 0) return null;
+		if (tokens.size() == 0) return null;
 
 		preParse();
+
+		System.out.println(tokens.toString());
+
+
 
 		Expression exp = parseHelper(0, tokens.size());
 
