@@ -7,7 +7,6 @@ import java.util.Stack;
 public class Parser {
 	
 	public ArrayList<String> tokens;
-	
 
 	public void preParse() {
 		for (int i = 0; i < tokens.size(); i++) {
@@ -25,7 +24,6 @@ public class Parser {
 	public void preParseHelper(int index) {
 		int start = index;
 		int opens = 0;
-
 
 		int i = index;
 		while (i < tokens.size()) {
@@ -89,7 +87,6 @@ public class Parser {
 				break;
 			}
 		}
-		
 		
 		if (right == start && end == fullExp && extraParen) {
 			System.out.println("start: " + start + " end: " + end);
