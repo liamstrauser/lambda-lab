@@ -42,7 +42,7 @@ public class Lexer {
 			else{
 				String subs = "";
 
-				while (i < input.length() && Character.isLetter(input.charAt(i))) {
+				while (i < input.length() && (Character.isLetter(input.charAt(i)) || Character.isDigit(input.charAt(i)))) {
 					subs += input.charAt(i);
 					i++;
 				}

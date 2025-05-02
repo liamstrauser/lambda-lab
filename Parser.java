@@ -2,11 +2,13 @@
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Stack;
+import java.util.HashMap;
 
 
 public class Parser {
 	
 	public ArrayList<String> tokens;
+	public HashMap<String, Expression> defs = new HashMap<>();
 
 	public void preParse() {
 		for (int i = 0; i < tokens.size(); i++) {
@@ -96,7 +98,7 @@ public class Parser {
 		System.out.println("start: " + start + " end: " + end);
 
 		if (right == end) {
-			return new Application(parseHelper(start, right), new Variable(tokens.get(end)));
+			return new Application(parseHelper(start, right), defs.getOrDefault(tokens.get(end), new Variable(tokens.get(end))));
 		}
 
 		return new Application(parseHelper(start, right), parseHelper(++right, end));
@@ -116,7 +118,7 @@ public class Parser {
 		
 		// we are just looking at one thing so it is a variable
 		if (start == end) {
-			return new Variable(tokens.get(start));
+			return defs.getOrDefault(tokens.get(start), new Variable(tokens.get(start)));
 		}
 		
 		return parseApp(start, end);
@@ -126,21 +128,51 @@ public class Parser {
 	public Expression parse() throws ParseException {
 		if (tokens.size() == 0) return null;
 
-		preParse();
+		if (tokens.get(1).equals("=")) {
 
-		System.out.println(tokens.toString());
+			System.out.println(tokens.toString());
+			String name = tokens.get(0);
+			System.out.println("here");
+
+			if (!defs.isEmpty() || defs.containsKey(name)) {
+				System.out.println(name + " is already defined.");
+			}
+			else {
+				System.out.println(tokens.toString());
+				tokens.remove(0);
+				System.out.println(tokens.toString());
+				tokens.remove(0);
+				System.out.println(tokens.toString());
+	
+				preParse();
+	
+				Expression parsed = parseHelper(0, tokens.size());
+	
+				defs.put(name, parsed);
+				System.out.println("Added " + parsed + " as " + name);
+
+				return parsed;
+			}
+				
+		}
+		else {
+			preParse();
+			System.out.println(tokens.toString());
+
+			Expression exp = parseHelper(0, tokens.size());
+			return exp;
+		}
+		return null;
 
 
-
-		Expression exp = parseHelper(0, tokens.size());
 
 	
 		// This is nonsense code, just to show you how to thrown an Exception.
 		// To throw it, type "error" at the console
-		if ("apple".equals("error")) {
-			throw new ParseException("User typed \"Error\" as the input!", 0);
-		}
+		// if ("apple".equals("error")) {
+		// 	throw new ParseException("User typed \"Error\" as the input!", 0);
+		// }
+		// return null;
 		
-		return exp;
 	}
 }
