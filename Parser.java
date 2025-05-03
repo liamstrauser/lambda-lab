@@ -123,8 +123,6 @@ public class Parser {
 	public Expression parse() throws ParseException {
 		if (tokens.size() == 0) return null;
 
-		
-
 		if (tokens.size() > 3  && tokens.get(1).equals("=")) {
 
 			String name = tokens.get(0);
@@ -146,12 +144,23 @@ public class Parser {
 			}
 				
 		}
+		else if (tokens.get(0).equals("run")){
+			tokens.remove(0);
+
+			preParse();
+			Expression exp = Runner.run(parseHelper(0, tokens.size()));
+			
+			return exp;
+
+		}
 		else {
 			preParse();
 
 			Expression exp = parseHelper(0, tokens.size());
 			return exp;
 		}
+
+		
 	
 		// This is nonsense code, just to show you how to thrown an Exception.
 		// To throw it, type "error" at the console
