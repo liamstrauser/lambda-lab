@@ -91,11 +91,9 @@ public class Parser {
 		}
 		
 		if (right == start && end == fullExp && extraParen) {
-			System.out.println("start: " + start + " end: " + end);
 			return parseHelper(++start, end);
 		}
 
-		System.out.println("start: " + start + " end: " + end);
 
 		if (right == end) {
 			return new Application(parseHelper(start, right), defs.getOrDefault(tokens.get(end), new Variable(tokens.get(end))));
@@ -108,10 +106,7 @@ public class Parser {
 
 		end--;
 
-		System.out.println("start: " + start + " end: " + end);
-
 		if (tokens.get(start).equals("\\")) {
-			System.out.println("start: " + start + " end: " + end);
 			return new Function(new Variable (tokens.get(start+1)), parseHelper(start+3, end+1)); // IDK but this will handle function
 		}
 
@@ -128,28 +123,24 @@ public class Parser {
 	public Expression parse() throws ParseException {
 		if (tokens.size() == 0) return null;
 
-		if (tokens.get(1).equals("=")) {
+		
 
-			System.out.println(tokens.toString());
+		if (tokens.size() > 3  && tokens.get(1).equals("=")) {
+
 			String name = tokens.get(0);
-			System.out.println("here");
 
-			if (!defs.isEmpty() || defs.containsKey(name)) {
-				System.out.println(name + " is already defined.");
+			if (defs.containsKey(name)) {
+				return null;
 			}
 			else {
-				System.out.println(tokens.toString());
 				tokens.remove(0);
-				System.out.println(tokens.toString());
 				tokens.remove(0);
-				System.out.println(tokens.toString());
 	
 				preParse();
 	
 				Expression parsed = parseHelper(0, tokens.size());
 	
 				defs.put(name, parsed);
-				System.out.println("Added " + parsed + " as " + name);
 
 				return parsed;
 			}
@@ -157,15 +148,10 @@ public class Parser {
 		}
 		else {
 			preParse();
-			System.out.println(tokens.toString());
 
 			Expression exp = parseHelper(0, tokens.size());
 			return exp;
 		}
-		return null;
-
-
-
 	
 		// This is nonsense code, just to show you how to thrown an Exception.
 		// To throw it, type "error" at the console

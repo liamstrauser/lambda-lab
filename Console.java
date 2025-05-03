@@ -20,12 +20,27 @@ public class Console {
 			
 			ArrayList<String> tokens = lexer.tokenize(input);
 			parser.tokens = tokens;
+
+			boolean addExp = (tokens.size() > 2 && tokens.get(1).equals("=")) ? true : false;
+			String expName = (tokens.size() > 1) ? tokens.get(0) : null;
 			
 			String output = "";
 			
 			try {
 				Expression exp = parser.parse();
-				output = exp.toString();
+
+				if (addExp) {
+					if(exp == null) {
+						output = expName + " is already defined.";
+					}
+					else {
+						output = "Added " + exp.toString() + " as " + expName;
+					}
+				}
+				else {
+					output = exp.toString();
+				}
+
 			} catch (Exception e) {
 				System.out.println("Unparsable expression, input was: \"" + input + "\"");
 				input = cleanConsoleInput();
