@@ -168,6 +168,5 @@ public class Parser {
 		// 	throw new ParseException("User typed \"Error\" as the input!", 0);
 		// }
 		// return null;
-		
 	}
 }
