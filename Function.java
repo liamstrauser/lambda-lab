@@ -9,6 +9,12 @@ public class Function implements Expression {
         this.exp = exp;
     }
 
+    public Expression insert(Expression redexInsert, Variable ogVar, Expression redexExp){
+        
+        
+        
+        return redexInsert;
+    }
 
     public String toString() {
         return "(λ" + var + "." + exp + ")";
