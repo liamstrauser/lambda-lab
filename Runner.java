@@ -4,22 +4,41 @@ public class Runner {
 
     public static Expression run(Expression exp){
  
+        
+
         if (isRedex(exp)) {
             System.out.println("isRedex(exp): "+ isRedex(exp));
-            return runRedex(exp);
+            return reduce(exp);
         }
         return exp;
     }
 
-    public static Expression runRedex(Expression exp) {
+    public static Expression reduce(Expression exp) {
         
-        String ex = exp.toString();
-        String[] splitted = ex.split(" ");
+        if (exp instanceof Application) {
+            Application app = (Application) exp;
 
-        
-        
-        
+            if (app.left instanceof Function) {
+                Function func = (Function) app.left;
 
+                // function assets
+                Variable redexVar = func.var;
+                Expression redexExp = func.exp;
+
+                // unknown thing on the right -- but since the left of the app is a function you must insert whateever it is
+                Expression redexInsert = app.right;
+
+                // now need to put some function that inserts something into a function
+                // ex. insert(func, redexInsert) 
+                // I think that maybe we do this in function bc what if its STILL a function after we reduce?
+            }
+            // if the thing on the left is NOT an application?? probbaly just reduce both sides
+            else {
+
+            }
+        }
+
+        // its just a variable or has already been reduced
         return exp;
     }
 
