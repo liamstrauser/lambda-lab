@@ -35,50 +35,53 @@ public class Runner {
                 return func.insert(redexInsert, ogVar, redexExp); 
             }
 
-            // if the thing on the left is NOT an function?? probbaly just reduce both sides
+            // if the thing on the left is NOT an function?? reduce both sides, but first do the left
             else {
+                Expression leftRed = reduce(app.left);
+                Expression rightRed = reduce(app.right);
+
+                if (leftRed != null) {
+                    app.left = leftRed;
+                    return app;
+                }
                 
+
+                if (rightRed != null) {
+                    app.right = rightRed;
+                    return app;
+                }
             }
         }
 
-        // its just a variable or has already been reduced
+        // still have to reduce the expression embedded within that function
+        else if (exp instanceof Function) {
+
+            Function func = (Function) exp;
+            Expression red = reduce(func.exp);
+
+            if (red != null) {
+                func.exp = red;
+                return func;
+            }
+        }
+
+        // its just a variable or has already been reduced as much as it can
         return null;
     }
 
-
-    // public static boolean isRedex(Expression exp) {
-
-    //     String ex = exp.toString();
-
-    //     if (ex.length() < 6) {
-    //         return false;
-    //     }
-        
-    //     for (int i  = 0; i < ex.length(); i++) {
-    //         if (ex.charAt(i) == '(' && ex.substring(i+1, i+2).equals("λ")) {
-    //             int opens = 1;
-    //             i += 2;
-    //             while (opens > -1) {
-    //                 if (ex.charAt(i) == ('(')){
-    //                     opens ++;
-    //                 }
-    //                 else if (ex.charAt(i) == ')') {
-    //                     opens --;
-    //                     if (opens == 0) {
-    //                         return (++i <= ex.length()-1) ? true : false;
-    //                     }
-    //                 }
-    //                 else if (opens == 0) {
-    //                     return (++i <= ex.length()-1) ? true : false;
-    //                 }
-    //                 i++;
-    //             }
-               
-                
-    //         }
-    //     }
-        
-    //     return false;
-    // }
+    public static Expression deepCopy(Expression exp) {
+        if (exp instanceof Variable) {
+            return new Variable(exp.toString());
+        } 
+        else if (exp instanceof Application) {
+            Application app = (Application) exp;
+            return new Application(deepCopy(app.left), deepCopy(app.right));
+        } 
+        else if (exp instanceof Function) {
+            Function func = (Function) exp;
+            return new Function(new Variable(func.var.toString()), deepCopy(func.exp));
+        }
+    return null;
+}
 } 
 

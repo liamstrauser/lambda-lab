@@ -123,8 +123,8 @@ public class Parser {
 	public Expression parse() throws ParseException {
 		if (tokens.size() == 0) return null;
 
-		if (tokens.size() > 3  && tokens.get(1).equals("=")) {
-
+		if (tokens.size() >= 3  && tokens.get(1).equals("=")) {
+			
 			String name = tokens.get(0);
 
 			if (defs.containsKey(name)) {
@@ -133,14 +133,28 @@ public class Parser {
 			else {
 				tokens.remove(0);
 				tokens.remove(0);
-	
-				preParse();
-	
-				Expression parsed = parseHelper(0, tokens.size());
-	
-				defs.put(name, parsed);
 
-				return parsed;
+				if (tokens.get(0).equals("run")) {
+					tokens.remove(0);
+					preParse();
+					
+					Expression exp = parseHelper(0, tokens.size());
+					exp = Runner.run(exp);
+					
+					defs.put(name, exp);
+					return exp;
+				}
+				else {
+					preParse();
+		
+					Expression parsed = parseHelper(0, tokens.size());
+		
+					defs.put(name, parsed);
+
+					return parsed;
+				}
+				
+				
 			}
 				
 		}
