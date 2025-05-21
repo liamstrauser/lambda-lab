@@ -31,7 +31,6 @@ public class Runner {
                 Expression redexInsert = app.right.copy();
 
                 findFreeVars(redexInsert);
-
                 
                 return redexExp.insert(ogVar, redexInsert); 
             }

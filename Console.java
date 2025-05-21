@@ -38,10 +38,11 @@ public class Console {
 					}
 				}
 				else {
-					output = exp.toString();
+					if (exp != null) output = exp.toString();
 				}
 
 			} catch (Exception e) {
+				System.out.println(e);
 				System.out.println("Unparsable expression, input was: \"" + input + "\"");
 				input = cleanConsoleInput();
 				continue;
