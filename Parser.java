@@ -110,8 +110,6 @@ public class Parser {
 			return new Function(new Variable (tokens.get(start+1)), parseHelper(start+3, end+1)); // IDK but this will handle function
 		}
 
-		
-		// we are just looking at one thing so it is a variable
 		if (start == end) {
 			return defs.getOrDefault(tokens.get(start), new Variable(tokens.get(start)));
 		}

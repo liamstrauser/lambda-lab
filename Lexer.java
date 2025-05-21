@@ -37,8 +37,6 @@ public class Lexer {
 				comment = input.substring(i+1);
 				break;
 			}
-
-			// Group letters together as one string
 			else{
 				String subs = "";
 

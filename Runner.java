@@ -6,6 +6,7 @@ public class Runner {
 
     public static Expression run(Expression exp){
  
+        freeVars.clear();
         Expression red = reduce(exp);
 
         while (red != null) {
@@ -25,36 +26,24 @@ public class Runner {
             if (app.left instanceof Function) {
                 Function func = (Function) app.left;
 
-                // function assets
                 Variable ogVar = func.var;
                 Expression redexExp = func.exp;
+                Expression redexInsert = app.right.copy();
 
-                // unknown thing on the right -- but since the left of the app is a function you must insert whateever it is
-                Expression redexInsert = app.right;
+                findFreeVars(redexInsert);
 
-                if (redexInsert instanceof Variable) {
-                    redexInsert = (Variable) (redexInsert);
-                    freeVars.add(redexInsert.toString());
-                }
-
-                // now need to put some function that inserts something into a function
-                // ex. insert(func, redexInsert) 
-                // I think that maybe we do this in function bc what if its STILL a function after we reduce?
                 
-                return func.insert(ogVar, redexInsert, redexExp); 
+                return redexExp.insert(ogVar, redexInsert); 
             }
 
-            // if the thing on the left is NOT an function?? reduce both sides, but first do the left
             else {
                 Expression leftRed = reduce(app.left);
-                Expression rightRed = reduce(app.right);
-
                 if (leftRed != null) {
                     app.left = leftRed;
                     return app;
                 }
-                
 
+                Expression rightRed = reduce(app.right);
                 if (rightRed != null) {
                     app.right = rightRed;
                     return app;
@@ -62,7 +51,6 @@ public class Runner {
             }
         }
 
-        // still have to reduce the expression embedded within that function
         else if (exp instanceof Function) {
 
             Function func = (Function) exp;
@@ -74,22 +62,27 @@ public class Runner {
             }
         }
 
-        // its just a variable or has already been reduced as much as it can
         return null;
     }
 
-    public static Expression deepCopy(Expression exp) {
+    public static void findFreeVars(Expression exp) {
+
         if (exp instanceof Variable) {
-            return new Variable(exp.toString());
+            Variable var = (Variable) exp;
+            freeVars.add(var.name);
         } 
+        
         else if (exp instanceof Application) {
             Application app = (Application) exp;
-            return new Application(deepCopy(app.left), deepCopy(app.right));
+
+            findFreeVars(app.left);
+            findFreeVars(app.right);
         } 
         else if (exp instanceof Function) {
             Function func = (Function) exp;
-            return new Function(new Variable(func.var.toString()), deepCopy(func.exp));
+            freeVars.add(func.var.name);
+
+            findFreeVars(func.exp);
         }
-    return null;
-}
+    }
 } 
