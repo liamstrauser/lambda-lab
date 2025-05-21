@@ -1,5 +1,8 @@
+import java.util.HashSet;
+
 public class Runner {
 
+    public static HashSet<String> freeVars = new HashSet<>();
 
     public static Expression run(Expression exp){
  
@@ -12,6 +15,7 @@ public class Runner {
 
         return exp;
     }
+    
 
     public static Expression reduce(Expression exp) {
         
@@ -28,11 +32,16 @@ public class Runner {
                 // unknown thing on the right -- but since the left of the app is a function you must insert whateever it is
                 Expression redexInsert = app.right;
 
+                if (redexInsert instanceof Variable) {
+                    redexInsert = (Variable) (redexInsert);
+                    freeVars.add(redexInsert.toString());
+                }
+
                 // now need to put some function that inserts something into a function
                 // ex. insert(func, redexInsert) 
                 // I think that maybe we do this in function bc what if its STILL a function after we reduce?
                 
-                return func.insert(redexInsert, ogVar, redexExp); 
+                return func.insert(ogVar, redexInsert, redexExp); 
             }
 
             // if the thing on the left is NOT an function?? reduce both sides, but first do the left

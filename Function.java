@@ -9,12 +9,15 @@ public class Function implements Expression {
         this.exp = exp;
     }
 
-    public Expression insert(Expression redexInsert, Variable ogVar, Expression redexExp){
-
+    public Expression insert(Variable ogVar, Expression redexInsert, Expression redexExp){
+        
         if (redexExp instanceof Variable) {
             Variable var = (Variable) redexExp;
 
             if (var.toString().equals(ogVar.toString())) {
+
+                
+
                 return Runner.deepCopy(redexInsert);
             }
             
@@ -25,8 +28,8 @@ public class Function implements Expression {
 
         else if (redexExp instanceof Application){
             Application app = (Application) redexExp;
-            Expression left = insert(redexInsert, ogVar, app.left);
-            Expression right = insert(redexInsert, ogVar, app.right);
+            Expression left = insert(ogVar, redexInsert, app.left);
+            Expression right = insert(ogVar, redexInsert, app.right);
 
             return new Application (left, right);
         }
@@ -35,9 +38,10 @@ public class Function implements Expression {
 
             if (func.var.toString().equals(ogVar.toString())) {
                 return func;
+                
             }
 
-            Expression newExp = insert(redexInsert, ogVar, func.exp);
+            Expression newExp = insert(ogVar, redexInsert, func.exp);
             return new Function(func.var, newExp);
         }
         
