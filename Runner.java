@@ -14,6 +14,13 @@ public class Runner {
             red = reduce(exp);
         }
 
+
+        for (String key : Parser.defs.keySet()) {
+            if (Parser.defs.get(key).toString().equals(exp.toString())) {
+                return new Variable(key);
+            }
+        }
+
         return exp;
     }
     

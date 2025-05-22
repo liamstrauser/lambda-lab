@@ -8,8 +8,9 @@ import java.util.HashMap;
 public class Parser {
 	
 	public ArrayList<String> tokens;
-	public HashMap<String, Expression> defs = new HashMap<>();
+	public static HashMap<String, Expression> defs = new HashMap<>();
 
+	
 	public void preParse() {
 		for (int i = 0; i < tokens.size(); i++) {
 			if (tokens.get(i).equals("\\") && (i == 0 || !tokens.get(i-1).equals("("))) {
