@@ -1,3 +1,4 @@
+// Martina Lipczyk and Liam Strauser, ATICS Period 7
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -8,24 +9,28 @@ import java.util.regex.Pattern;
 public class Console {
 	private static Scanner in;
 	
+	
 	public static void main(String[] args) {
 		in = new Scanner (System.in);
 		
+
 		Lexer lexer = new Lexer();
 		Parser parser = new Parser();
-		
 		String input = cleanConsoleInput();  // see comment
 		
+
+
 		while (! input.equalsIgnoreCase("exit")) {
 			
 			ArrayList<String> tokens = lexer.tokenize(input);
 			parser.tokens = tokens;
 
+
 			boolean addExp = (tokens.size() > 2 && tokens.get(1).equals("=")) ? true : false;
 			String expName = (tokens.size() > 1) ? tokens.get(0) : null;
 			
+
 			String output = "";
-			
 			try {
 				Expression exp = parser.parse();
 
@@ -41,6 +46,8 @@ public class Console {
 					if (exp != null) output = exp.toString();
 				}
 
+
+				
 			} catch (Exception e) {
 				System.out.println(e);
 				System.out.println("Unparsable expression, input was: \"" + input + "\"");

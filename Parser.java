@@ -1,3 +1,4 @@
+// Martina Lipczyk and Liam Strauser, ATICS Period 7
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ public class Parser {
 	public static HashMap<String, Expression> defs = new HashMap<>();
 
 	
+
 	public void preParse() {
 		for (int i = 0; i < tokens.size(); i++) {
 			if (tokens.get(i).equals("\\") && (i == 0 || !tokens.get(i-1).equals("("))) {
@@ -19,14 +21,20 @@ public class Parser {
 		}
 	}
 
+
+
 	public void insertParens(int start, int end) {
 		tokens.add(start, "(");
 		tokens.add(++end, ")");
 	}
 
+
+
+
 	public void preParseHelper(int index) {
 		int start = index;
 		int opens = 0;
+
 
 		int i = index;
 		while (i < tokens.size()) {
@@ -35,6 +43,7 @@ public class Parser {
 			if (current.equals("(")){
 				opens++;
 			}
+
 			
 			else if(current.equals(")")){
 				opens--;
@@ -42,26 +51,36 @@ public class Parser {
 				if (opens < -1){
 					System.out.println("closing paren error");
 				}
+
+
 				else if(opens == -1){
 					insertParens(start, i);
 					return;
 				}
 			}
+
 			i++;
 		}
+
 
 		if (opens == 0){
 			insertParens(start, i);
 		} 
 		
+
 		else if (opens > 0){
 			System.out.println("Unclosed opening");
 		}
 		
+
 		else {
 			System.out.println("closing paren error");
 		}
 	}
+
+
+
+
 
 	public Expression parseApp (int start, int end) {
 		int parenCount = 0;
@@ -78,6 +97,8 @@ public class Parser {
 				}
 				parenCount++;
 			}
+
+
 			else if (tokens.get(i).equals("(")) {
 				parenCount--;
 				if (parenCount == 0) {
@@ -85,6 +106,8 @@ public class Parser {
 					 break;
 				}
 			}
+
+
 			else if (parenCount == 0) {
 				right = i;
 				break;
@@ -103,6 +126,11 @@ public class Parser {
 		return new Application(parseHelper(start, right), parseHelper(++right, end));
 	}
 
+
+
+
+
+
 	public Expression parseHelper(int start, int end) {
 
 		end--;
@@ -119,6 +147,9 @@ public class Parser {
 	}
 	
 
+
+
+
 	public Expression parse() throws ParseException {
 		if (tokens.size() == 0) return null;
 
@@ -129,6 +160,8 @@ public class Parser {
 			if (defs.containsKey(name)) {
 				return null;
 			}
+
+
 			else {
 				tokens.remove(0);
 				tokens.remove(0);
@@ -143,6 +176,7 @@ public class Parser {
 					defs.put(name, exp);
 					return exp;
 				}
+
 				else {
 					preParse();
 		
@@ -152,11 +186,10 @@ public class Parser {
 
 					return parsed;
 				}
-				
-				
-			}
-				
+			}	
 		}
+
+
 		else if (tokens.get(0).equals("run")){
 			tokens.remove(0);
 
@@ -166,20 +199,13 @@ public class Parser {
 			return exp;
 
 		}
+
+
 		else {
 			preParse();
 
 			Expression exp = parseHelper(0, tokens.size());
 			return exp;
 		}
-
-		
-	
-		// This is nonsense code, just to show you how to thrown an Exception.
-		// To throw it, type "error" at the console
-		// if ("apple".equals("error")) {
-		// 	throw new ParseException("User typed \"Error\" as the input!", 0);
-		// }
-		// return null;
 	}
 }

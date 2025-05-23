@@ -1,3 +1,4 @@
+// Martina Lipczyk and Liam Strauser, ATICS Period 7
 
 public class Variable implements Expression {
 	public String name;
@@ -6,13 +7,19 @@ public class Variable implements Expression {
 		this.name = name;
 	}
 	
+
+
 	public String toString() {
 		return name;
 	}
 
+
+
 	public Variable copy() {
 		return new Variable(name);
 	}
+
+
 
 	public Expression insert(Variable var, Expression exp) {
 		if (this.equals(var)) {
@@ -20,6 +27,9 @@ public class Variable implements Expression {
 		}
 		return this;
 	}
+
+
+
 
 	public boolean equals(Expression o) {
 		return (o instanceof Variable x && this.name.equals(x.name)) ? true : false;
