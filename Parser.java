@@ -108,7 +108,7 @@ public class Parser {
 		end--;
 
 		if (tokens.get(start).equals("\\")) {
-			return new Function(new Variable (tokens.get(start+1)), parseHelper(start+3, end+1)); // IDK but this will handle function
+			return new Function(new Variable (tokens.get(start+1)), parseHelper(start+3, end+1)); 
 		}
 
 		if (start == end) {

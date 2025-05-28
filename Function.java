@@ -41,7 +41,6 @@ public class Function implements Expression {
 
         if (expr instanceof Variable) {
             return ((Variable) expr).name.equals(name);
-
         } 
         
         else if (expr instanceof Application) {
