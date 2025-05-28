@@ -31,7 +31,7 @@ public class Variable implements Expression {
 
 
 
-	public boolean equals(Expression o) {
-		return (o instanceof Variable x && this.name.equals(x.name)) ? true : false;
+	public boolean equals(Expression other) {
+		return (other instanceof Variable x && this.name.equals(x.name)) ? true : false;
 	}
 }

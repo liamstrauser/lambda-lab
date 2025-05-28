@@ -6,6 +6,8 @@ public class Function implements Expression {
     public Expression exp;
     
 
+
+
     public Function(Variable var, Expression exp) {
         this.var = var;
         this.exp = exp;
@@ -14,9 +16,11 @@ public class Function implements Expression {
 
 
 
+
     public Function copy() {
         return new Function(var.copy(), exp.copy());
     }
+
 
 
 
@@ -81,6 +85,7 @@ public class Function implements Expression {
 
 
 
+
     public String newName(String og) {
         String name = og;
         int counter = 1;
@@ -97,6 +102,7 @@ public class Function implements Expression {
 
         return name;
     }
+
 
 
 

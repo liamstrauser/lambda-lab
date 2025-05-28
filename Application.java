@@ -5,15 +5,21 @@ public class Application implements Expression {
     public Expression left;
     public Expression right;
 
+
+
     public Application(Expression left, Expression right){
         this.left = left;
         this.right = right;
     }
 
 
+
+
     public Application copy() {
         return new Application(left.copy(), right.copy());
     }
+
+
 
 
     public Expression insert(Variable var, Expression exp) {
@@ -26,9 +32,13 @@ public class Application implements Expression {
     }
 
 
-    public boolean equals(Expression o) {
-        return (o instanceof Application x && (this.left.equals(x.left) && this.right.equals(x.right))) ? true : false;
+
+
+    public boolean equals(Expression other) {
+        return (other instanceof Application x && (this.left.equals(x.left) && this.right.equals(x.right))) ? true : false;
     }
+
+
 
 
     public String toString() {

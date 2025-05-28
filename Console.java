@@ -16,7 +16,7 @@ public class Console {
 
 		Lexer lexer = new Lexer();
 		Parser parser = new Parser();
-		String input = cleanConsoleInput();  // see comment
+		String input = cleanConsoleInput();  
 		
 
 
@@ -61,6 +61,11 @@ public class Console {
 		}
 		System.out.println("Goodbye!");
 	}
+
+
+
+
+
 
 	
 	/*
