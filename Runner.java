@@ -1,8 +1,12 @@
+// Martina Lipczyk and Liam Strauser, ATICS Period 7
+
 import java.util.HashSet;
 
 public class Runner {
 
     public static HashSet<String> freeVars = new HashSet<>();
+
+
 
     public static Expression run(Expression exp){
  
@@ -25,10 +29,13 @@ public class Runner {
     }
     
 
+
+
     public static Expression reduce(Expression exp) {
         
         if (exp instanceof Application) {
             Application app = (Application) exp;
+
 
             if (app.left instanceof Function) {
                 Function func = (Function) app.left;
@@ -57,6 +64,7 @@ public class Runner {
             }
         }
 
+
         else if (exp instanceof Function) {
 
             Function func = (Function) exp;
@@ -68,8 +76,13 @@ public class Runner {
             }
         }
 
+
         return null;
     }
+
+
+
+
 
     public static void findFreeVars(Expression exp) {
 
@@ -84,6 +97,7 @@ public class Runner {
             findFreeVars(app.left);
             findFreeVars(app.right);
         } 
+        
         else if (exp instanceof Function) {
             Function func = (Function) exp;
             freeVars.add(func.var.name);
